@@ -1,7 +1,7 @@
 FROM caddy:2.3.0-builder AS builder
 
 RUN xcaddy build \
-    --with github.com/caddy-dns/lego-deprecated
+    --with github.com/caddy-dns/cloudflare
 
 FROM caddy:2.3.0
 

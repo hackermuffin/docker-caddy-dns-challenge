@@ -1,6 +1,6 @@
 {$DOMAIN} {
     tls {
-        dns lego_deprecated duckdns
+        dns cloudflare {$TOKEN}
     }
     reverse_proxy {$REVERSE_PROXY}
 }
