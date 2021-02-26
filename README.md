@@ -5,6 +5,7 @@ This repo contains the files for a modified caddy docker image, configured to re
 The repo currently contains docker setup and configuration for both cloudflare and duckdns, with the following tags:
 - `latest`, `cloudflare`
 - `duckdns`
+
 However, with a custom caddyfile, the duckdns version can be used for a variety of other DNS providers, as documented https://go-acme.github.io/lego/dns/.
 
 ## Basic Usage
@@ -17,20 +18,22 @@ The following environment variables should be set:
 - `TOKEN`: cloudflare or duckdns API token
 - `REVERSE_PROXY`: The address and port of the service to be reverse proxied
 
-The continer can be run with the following (don't forget to use the hackermuffin/caddy-dns-challenge:duckdns image if not using cloudflare):
-``` $ docker run -d \
+The container can be run with the following (don't forget to use the hackermuffin/caddy-dns-challenge:duckdns image if not using cloudflare):
+
+```console
+$ docker run -d \
     -p 80:80 \
     -p 433:433 \
     -v caddy_data:/data \
     -v caddy_config:/config \
-    -e DOMAIN=<duckdns-domain> \ 
+    -e DOMAIN=<domain> \ 
     -e TOKEN=<token> \
     -e REVERSE\_PROXY=<proxy-address> \
     hackermuffin/caddy-dns-challenge
 ```
 
 Or, in a docker-compose file:
-```
+```console
 version: '3'
  
 services: 
@@ -43,7 +46,7 @@ services:
       - "80:80"
       - "443:443"
     environment:
-      - DOMAIN=<duckdns-domain>
+      - DOMAIN=<domain>
       - TOKEN=<token>
       - REVERSE_PROXY=<proxy-address>
     volumes:
@@ -56,4 +59,5 @@ volumes:
 ## Further documentation
 
 Full documetation for the base caddy container can be found at https://hub.docker.com/\_/caddy/.
+
 For further documentation on the lego-deprecated module, see https://github.com/caddy-dns/lego-deprecated, or for the cloudflare module at https://github.com/caddy-dns/cloudflare.
