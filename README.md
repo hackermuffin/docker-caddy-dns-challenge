@@ -15,10 +15,11 @@ The contianer uses port 80 and 443, which can be forwarded to any other host por
 
 The following environment variables should be set:
 - `DOMAIN`: domain on which caddy will request a certificate
-- `TOKEN`: cloudflare or duckdns API token
+- `TOKEN`: cloudflare  API token (only if using cloudflare)
+- `DUCKDNS_TOKEN`: duckdns token (only if using duckdns)
 - `REVERSE_PROXY`: The address and port of the service to be reverse proxied
 
-The container can be run with the following (don't forget to use the hackermuffin/caddy-dns-challenge:duckdns image if not using cloudflare):
+The default container can be run with the following:
 
 ```console
 $ docker run -d \
@@ -32,7 +33,21 @@ $ docker run -d \
     hackermuffin/caddy-dns-challenge
 ```
 
+Or for the duckdns module:
+```console
+$ docker run -d \
+    -p 80:80 \
+    -p 433:433 \
+    -v caddy_data:/data \
+    -v caddy_config:/config \
+    -e DOMAIN=<domain> \ 
+    -e DUCKDNS_TOKEN=<token> \
+    -e REVERSE\_PROXY=<proxy-address> \
+    hackermuffin/caddy-dns-challenge:duckdns
+```
+
 Or, in a docker-compose file:
+
 ```console
 version: '3'
  
@@ -55,6 +70,29 @@ services:
 volumes:
   caddy_data:
 ```
+
+And for duckdns:
+```console
+version: '3'
+ 
+services: 
+  caddy:
+    image: hackermuffin/caddy-duckdns-docker:duckdns
+    container_name: caddy
+    hostname: caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - DOMAIN=<domain>
+      - DUCKDNS_TOKEN=<token>
+      - REVERSE_PROXY=<proxy-address>
+    volumes:
+      - caddy_data:/data
+
+volumes:
+  caddy_data:
 
 ## Further documentation
 
