@@ -24,7 +24,7 @@ The default container can be run with the following:
 ```console
 docker run -d \
     -p 80:80 \
-    -p 433:433 \
+    -p 443:443 \
     -v caddy_data:/data \
     -v caddy_config:/config \
     -e DOMAIN=<domain> \ 
@@ -95,6 +95,7 @@ services:
 volumes:
   caddy_data:
   caddy_config:
+```
 
 ## Further documentation
 
