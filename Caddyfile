@@ -1,7 +1,6 @@
 {$DOMAIN} {
     tls {
-        dns cloudflare {$TOKEN}
+        dns cloudflare {$CLOUDFLARE_TOKEN}
     }
     reverse_proxy {$REVERSE_PROXY}
 }
-

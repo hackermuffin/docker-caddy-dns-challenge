@@ -11,38 +11,38 @@ However, with a custom caddyfile, the duckdns version can be used for a variety 
 ## Basic Usage
 You will need a domain configured to resolve to the (possibly local) ip address of the server where caddy will run. This can be done either with an existing domaing through [Cloudflare ](https://www.cloudflare.com/) or for free with [DuckDNS](https://www.duckdns.org/). 
 
-The contianer uses port 80 and 443, which can be forwarded to any other host port, and should have a persisted /data folder. 
+The container uses port 80 and 443, which can be forwarded to any other host port, and should have a persisted /data folder. A persistent /config folder can be useful for viewing the configs while the container is running.
 
 The following environment variables should be set:
 - `DOMAIN`: domain on which caddy will request a certificate
-- `TOKEN`: cloudflare  API token (only if using cloudflare)
+- `CLOUDFLARE_TOKEN`: cloudflare API token (only if using cloudflare)
 - `DUCKDNS_TOKEN`: duckdns token (only if using duckdns)
 - `REVERSE_PROXY`: The address and port of the service to be reverse proxied
 
 The default container can be run with the following:
 
 ```console
-$ docker run -d \
+docker run -d \
     -p 80:80 \
     -p 433:433 \
     -v caddy_data:/data \
     -v caddy_config:/config \
     -e DOMAIN=<domain> \ 
-    -e TOKEN=<token> \
-    -e REVERSE\_PROXY=<proxy-address> \
+    -e CLOUDFLARE_TOKEN=<token> \
+    -e REVERSE_PROXY=<proxy-address> \
     hackermuffin/caddy-dns-challenge
 ```
 
 Or for the duckdns module:
 ```console
-$ docker run -d \
+docker run -d \
     -p 80:80 \
     -p 433:433 \
     -v caddy_data:/data \
-    -v caddy_config:/config \
+    -v caddy_config:/config
     -e DOMAIN=<domain> \ 
     -e DUCKDNS_TOKEN=<token> \
-    -e REVERSE\_PROXY=<proxy-address> \
+    -e REVERSE_PROXY=<proxy-address> \
     hackermuffin/caddy-dns-challenge:duckdns
 ```
 
@@ -55,20 +55,21 @@ services:
   caddy:
     image: hackermuffin/caddy-duckdns-docker
     container_name: caddy
-    hostname: caddy
     restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
     environment:
       - DOMAIN=<domain>
-      - TOKEN=<token>
+      - CLOUDFLARE_TOKEN=<token>
       - REVERSE_PROXY=<proxy-address>
     volumes:
       - caddy_data:/data
+      - caddy_config:/config
 
 volumes:
   caddy_data:
+  caddy_config:
 ```
 
 And for duckdns:
@@ -79,7 +80,6 @@ services:
   caddy:
     image: hackermuffin/caddy-duckdns-docker:duckdns
     container_name: caddy
-    hostname: caddy
     restart: unless-stopped
     ports:
       - "80:80"
@@ -90,9 +90,11 @@ services:
       - REVERSE_PROXY=<proxy-address>
     volumes:
       - caddy_data:/data
+      - caddy_config:/config
 
 volumes:
   caddy_data:
+  caddy_config:
 
 ## Further documentation
 
