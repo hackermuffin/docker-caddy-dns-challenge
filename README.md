@@ -1,4 +1,4 @@
-# caddy-local-dns
+# caddy-dns-challenge
 
 This repo contains the files for a modified caddy docker image, configured to reverse proxy a site over HTTPS using a DNS challenge, designed with either a cloudflare or duckdns DNS provider. One use case is to create an SSL connection over a local network, which is useful for services such as bitwarden, or simply to avoid browser errors.
 
