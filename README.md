@@ -37,9 +37,9 @@ Or for the duckdns module:
 ```console
 docker run -d \
     -p 80:80 \
-    -p 433:433 \
+    -p 443:443 \
     -v caddy_data:/data \
-    -v caddy_config:/config
+    -v caddy_config:/config \
     -e DOMAIN=<domain> \ 
     -e DUCKDNS_TOKEN=<token> \
     -e REVERSE_PROXY=<proxy-address> \
@@ -53,7 +53,7 @@ version: '3'
  
 services: 
   caddy:
-    image: hackermuffin/caddy-duckdns-docker
+    image: hackermuffin/caddy-dns-challenge
     container_name: caddy
     restart: unless-stopped
     ports:
@@ -78,7 +78,7 @@ version: '3'
  
 services: 
   caddy:
-    image: hackermuffin/caddy-duckdns-docker:duckdns
+    image: hackermuffin/caddy-dns-challenge:duckdns
     container_name: caddy
     restart: unless-stopped
     ports:
